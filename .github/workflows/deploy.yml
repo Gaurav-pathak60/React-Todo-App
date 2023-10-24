@@ -10,18 +10,17 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16]
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Setup Node and pnpm
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
@@ -40,10 +39,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
-
-    strategy:
-      matrix:
-        node-version: [16]
 
     steps:
       - name: Download artifact
